@@ -1,0 +1,46 @@
+:root {
+    --widthSize: 40%
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+#wrapper {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#input-number {
+    width: var(--widthSize);
+    aspect-ratio: 10/1;
+    font-size: 1.4rem;
+    /*text-align: center;*/
+}
+
+#gap {
+    width: 100%;
+    height: 1.2rem;
+}
+
+#PT-div {
+    width: var(--widthSize);
+}
+
+.PT-setting {
+    font-size: 1.3rem;
+    margin: 0.5rem 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.PTs-setting {
+    margin-left: auto;
+}
