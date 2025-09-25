@@ -1,3 +1,4 @@
+const inputNumber = document.getElementById("input-number");
 const SoE = document.getElementById("SoE");
 const FPT = document.getElementById("FPT");
 const SSPT = document.getElementById("SSPT");
@@ -6,12 +7,6 @@ const MRPT = document.getElementById("MRPT");
 // a부터 b까지의 수가 들어있는 배열 생성
 function rangeArray(a, b) {
     return Array.from({length: b - a + 1}, (_, i) => a + i);
-}
-
-// max보다 작은 n을 제외한 n의 배수 생성
-function getmultiples(n, max) {
-    const realMax = Math.floor(max / n);
-    return Array.from({length: realMax}, (_, i) => k * (i + 1)).shift();
 }
 
 // arr의 원소 중에서 val삭제
@@ -24,11 +19,11 @@ function delValue(arr, val) {
 }
 
 // 최대 공약수 함수
-function gcd(a, b) {
+function isCoprime(a, b) {
     if(b === 0) {
-        return a;
+        return a === 1;
     }
-    return gcd(b, a % b);
+    return isCoprime(b, a % b);
 }
 
 // 르장드르 기호 {\displaystyle \left({\frac {a}{p}}\right)}
@@ -46,22 +41,24 @@ function SoEf(p) {
     // 2부터 p까지의 수가 들어있는 배열 생성
     let rangeArr = rangeArray(2, p);
 
-    let c=2;
+    let n=2;
     let idx=0;
     let endN = Math.sqrt(rangeArr[-1]);
 
     // 에라토스테네스의 체
     while(true) {
-        let multiplesArr = getmultiples(c, p);
+        // p보다 작은 n을 제외한 n의 배수 생성
+        let multiplesArr = Array.from({length: Math.floor(p / n)}, (_, i) => n * (i + 1)).shift();
         for(let i=0; i<length.multiplesArr; i++) {
             delValue(rangeArr, multiplesArr[i]);
         }
         idx += 1;
-        c = rangeArr[idx];
+        n = rangeArr[idx];
 
-        if(c > endN) { break; }
+        if(n > endN) { break; }
     }
 
+    console.log("ok");
     return rangeArr.includes(p);
 }
 
@@ -76,7 +73,7 @@ function FPTf(p) {
     // p와 서로소인 숫자들의 배열 생성
     let aArray = []
     for(let i=2; i<p; i++) {
-        if(gcd(i, p) === 1) {
+        if(isCoprime(p, i)) {
             aArray.push(i)
         }
     }
@@ -100,7 +97,7 @@ function SSPTf(p) {
     // a들의 리스트 생성
     let aArray = [];
     for(let i=2; i<p; i++) {
-        if(gcd(i, p) === 1) {
+        if(isCoprime(p, i)) {
             aArray.push(i)
         }
     }
@@ -158,3 +155,27 @@ function MRPTf(p) {
         }
     }
 }
+
+function PTs(n, dom, PTf) {
+    if(PTf(n)) { dom.textContent = "소수"; }
+    else { dom.textContent = "소수가 아님"; }
+}
+
+inputNumber.addEventListener("change", (evt) => {
+
+    const num = Number(evt.target.value);
+
+    if(num <= 0 || !Number.isInteger(num)) { alert("자연수를 입력해 주세요."); }
+
+    if(num === 2) {
+        SoE.textContent = "소수";
+        FPT.textContent = "소수";
+        SSPT.textContent = "소수";
+        MRPT.textContent = "소수";
+    }
+
+    PTs(num, SoE, SoEf);
+    PTs(num, FPT, FPTf);
+    PTs(num, SSPT, SSPTf);
+    PTs(num, MRPT, MRPTf);
+})
